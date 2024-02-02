@@ -20,7 +20,7 @@ devtools::install_github("daniel1noble/orchaRd", force = TRUE)
 vignette("orchaRd")
 
 # load data
-mydata <- read.csv("C:/Users/katar/Documents/Meta-analiza/ES_biol_2023.csv", sep=";")
+mydata <- read.csv(here("C:/Users/katar/Documents/Meta-analiza/ES_biol_2023.csv"), sep = ";")
 
 # load phylogenetic tree
 mytree <- multi2di(read.tree("bird_tree.tre"))
