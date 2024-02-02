@@ -39,6 +39,7 @@ pacman::p_load(
 devtools::install_github("daniel1noble/orchaRd", force = TRUE)
 devtools::install_github("daniel1noble/metaAidR", force = TRUE)
 library(orchaRd)
+library(metaAidR)
 options(digits = 3, scipen = 5)
 ```
 

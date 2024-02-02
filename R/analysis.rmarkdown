@@ -419,3 +419,11 @@ plot_continuous(mydata, M5.0, mydata$date, "Publication year")
 pred_Egger_reg <- predict.rma(M4.0)  
 plot_continuous(mydata, M4.0, sqrt(mydata$Z_var), "Standard error")
 ```
+
+
+# Session information
+
+```{r}
+sessionInfo()
+```
+
