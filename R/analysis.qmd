@@ -157,7 +157,7 @@ summary(M1.0)
 
 ```{r}
 #| label: fig-rescolourtype
-#| fig-cap: Orchard plot of the impact of pollution on avian colour traits as a function of the colour-producing mechanism conditioned for the measurement method (Nakagawa et al. 2023)
+#| fig-cap: Orchard plot of the impact of pollution on avian colour traits as a function of the colour-producing mechanism conditioned for the measurement method (Nakagawa et al. 2023); Fig. 2 in the manuscript
 #| code-fold: true
 
 
@@ -169,7 +169,7 @@ res_colour_type
 
 ```{r}
 #| label: fig-ressex
-#| fig-cap: Figure S2
+#| fig-cap: Impact of sex on effect sizes; Fig. S2.A in the manuscript
 #| code-fold: true
 
 
@@ -180,7 +180,7 @@ res_sex
 
 ```{r}
 #| label: fig-resage
-#| fig-cap: Figure S2
+#| fig-cap: Impact of age class on effect sizes; Fig. S2.B in the manuscript
 #| code-fold: true
 
 
@@ -191,7 +191,7 @@ res_age
 
 ```{r}
 #| label: fig-respart
-#| fig-cap: Figure S2
+#| fig-cap: Impact of sampling region on effect sizes; Fig. S2.C in the manuscript
 #| code-fold: true
 
 
@@ -202,7 +202,7 @@ res_measured_part
 
 ```{r}
 #| label: fig-resrawmodel
-#| fig-cap: Figure S3
+#| fig-cap: Impact of data type on effect sizes; Fig. S3.A in the manuscript
 #| code-fold: true
 
 
@@ -213,7 +213,7 @@ res_raw_or_model
 
 ```{r}
 #| label: fig-resstudytype
-#| fig-cap: Figure S3
+#| fig-cap: Impact of study type on effect sizes; Fig. S3.B in the manuscript
 #| code-fold: true
 
 
@@ -224,7 +224,7 @@ res_study_type
 
 ```{r}
 #| label: fig-resmethod
-#| fig-cap: Figure S3
+#| fig-cap: Impact of measurement method on effect sizesl; Fig. S3.C in the manuscript
 #| code-fold: true
 
 
@@ -380,7 +380,7 @@ summary(M5.0)
 
 ```{r}
 #| label: fig-fig3
-#| fig-cap: Bubble plot showing a positive significant temporal trend in trend in published effect size estimates
+#| fig-cap: Bubble plot showing a positive significant temporal trend in trend in published effect size estimates; Fig. 3 in the manuscript
 #| code-fold: true
 
 
@@ -390,7 +390,7 @@ plot_continuous(mydata, M5.0, mydata$date, "Publication year")
 
 ```{r}
 #| label: fig-figS4
-#| fig-cap: Funnel plot of effect sizes from the biology ES data set versus standard errors of effect sizes
+#| fig-cap: Funnel plot of effect sizes from the biology ES data set versus standard errors of effect sizes; Fig. S4 in the manuscript
 #| code-fold: true
 
 
