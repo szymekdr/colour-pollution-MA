@@ -64,7 +64,7 @@ run.model<-function(mydata,formula){
 }
 
 plot_continuous<-function(data, model, moderator, xlab){
-  pred<-predict.rma(model)
+  pred <- predict.rma(model)
   data %>% mutate(fit=pred$pred, 
                   ci.lb=pred$ci.lb,
                   ci.ub=pred$ci.ub,
@@ -74,12 +74,12 @@ plot_continuous<-function(data, model, moderator, xlab){
     geom_ribbon(aes(ymin = pr.lb, ymax = pr.ub, color = NULL), alpha = .1) +
     geom_ribbon(aes(ymin = ci.lb, ymax = ci.ub, color = NULL), alpha = .3) +
     geom_point(aes(size=(1/sqrt(mydata$Z_var))), shape= 21, alpha=0.7, fill="#6F94B7", col="#305980") +
-    geom_line(aes(y = fit), size = 1.5)+  
+    geom_line(aes(y = fit), linewidth = 1.5)+  
     labs(x = xlab, y = "Effect size", size = "Precision (1/SE)") +
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
     scale_size_continuous(range=c(1,12))+
-    geom_hline(yintercept = 0,linetype = 2, colour = "black",alpha=0.5)+   
+    geom_hline(yintercept = 0, linetype = 2, colour = "black", alpha=0.5)+   
     theme(text = element_text(size = 18, colour = "black", hjust = 0.5),
           legend.text=element_text(size=14),
           legend.position=c(0,0), 
@@ -384,7 +384,7 @@ summary(M5.0)
 
 
 pred_year_model <- predict.rma(M5.0)
-plot_continuous(mydata, year_model, mydata$date, "Publication year")
+plot_continuous(mydata, M5.0, mydata$date, "Publication year")
 ```
 
 ```{r}
