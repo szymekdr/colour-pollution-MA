@@ -1,5 +1,45 @@
 ---
-title: "Untitled"
-format: html
+title: "MA of pollution impacts on bird lumage colouration"
+author: "Katarzyna Janas, Agnieszka Gudowska, Szymek Drobniak"
+date: "`r Sys.Date()`"
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-depth: 2
+    theme: simplex
+    embed-resources: true
+    code-fold: show
+    code-tools: true
+    number-sections: true
+crossref: 
+  fig-title: Figure     # (default is "Figure")
+  tbl-title: Table     # (default is "Table")
+  title-delim: —     # (default is ":")
+  fig-prefix: Fig.   # (default is "Figure")
+  tbl-prefix: Tab.    # (default is "Table")
+editor_options: 
+  chunk_output_type: console
 ---
+
+# Setup your session
+
+```{r}
+#| output: false
+#| warning: false
+#| label: packages
+#| code-overflow: wrap
+#| code-fold: true
+
+pacman::p_load(
+    here, MCMCglmm, metafor,
+    phytools, brms, lme4,
+    lmerTest, nlme, glmmTMB,
+    phylolm, ape, MASS,
+    tidyverse, cmdstanr,
+    posterior, bayesplot, flextable
+)
+
+options(digits = 3, scipen = 5)
+```
 
