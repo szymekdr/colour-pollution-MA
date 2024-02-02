@@ -32,12 +32,63 @@ editor_options:
 #| code-fold: true
 
 pacman::p_load(
-    here, ggplot2, ggpubr, packcircles, metafor, devtools, orchaRd,
-    metaAidR, patchwork, tidyverse, ape,
+    here, ggplot2, ggpubr, packcircles, metafor, devtools,
+    patchwork, tidyverse, ape,
     R.rsp, emmeans
 )
-
+devtools::install_github("daniel1noble/orchaRd", force = TRUE)
+devtools::install_github("daniel1noble/metaAidR", force = TRUE)
+library(orchaRd)
 options(digits = 3, scipen = 5)
+```
+
+### Helper functions
+```{r}
+#| code-fold: true
+
+
+run.model<-function(mydata,formula){
+  
+  mydata<-as.data.frame(mydata)
+  Z <- make_VCV_matrix(mydata, V="Z_var", cluster = "Study_no", obs="es_ID")
+  
+  rma.mv(yi=ES_biol, V=Z,
+         method="REML",
+         mods= formula,
+         random = list(~1|tip_label,
+                       ~1|Study_no,
+                       ~1|es_ID,
+                       ~1|research_group),
+         control=list(optimizer="optim",optmethod="Nelder-Mead"),
+         data = mydata)
+}
+
+plot_continuous<-function(data, model, moderator, xlab){
+  pred<-predict.rma(model)
+  data %>% mutate(fit=pred$pred, 
+                  ci.lb=pred$ci.lb,
+                  ci.ub=pred$ci.ub,
+                  pr.lb=pred$cr.lb,
+                  pr.ub=pred$cr.ub) %>% 
+    ggplot(aes(x = moderator, y = ES_biol)) +
+    geom_ribbon(aes(ymin = pr.lb, ymax = pr.ub, color = NULL), alpha = .1) +
+    geom_ribbon(aes(ymin = ci.lb, ymax = ci.ub, color = NULL), alpha = .3) +
+    geom_point(aes(size=(1/sqrt(mydata$Z_var))), shape= 21, alpha=0.7, fill="#6F94B7", col="#305980") +
+    geom_line(aes(y = fit), size = 1.5)+  
+    labs(x = xlab, y = "Effect size", size = "Precision (1/SE)") +
+    theme_bw() +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+    scale_size_continuous(range=c(1,12))+
+    geom_hline(yintercept = 0,linetype = 2, colour = "black",alpha=0.5)+   
+    theme(text = element_text(size = 18, colour = "black", hjust = 0.5),
+          legend.text=element_text(size=14),
+          legend.position=c(0,0), 
+          legend.justification = c(0,0),
+          legend.background = element_blank(), 
+          legend.direction="horizontal",
+          legend.title = element_text(size=15), 
+          panel.border=element_rect(colour="black", fill=NA, size=1.2))
+}
 ```
 
 # Load and process data
@@ -55,7 +106,6 @@ cor <- vcv(subtree, cor = T)
 #calculate weights
 mydata$Z_var <- 1/(mydata$n-3)
 mydata$weight <- 1/mydata$Z_var
-summary(mydata)
 ```
 
 # Modelling
@@ -188,7 +238,7 @@ res_method
 ### Model 2.1 (on the subset of 'hue')
 ```{r}
 hue <- subset(mydata, HSB == "hue")
-summary(hue)
+# summary(hue)
 mydata$Z_var <- 1/(mydata$n-3)
 mydata$weight <- 1/mydata$Z_var
 M2.1 <- rma.mv(yi = ES_biol, V = Z_var,
@@ -218,7 +268,7 @@ summary(M2.1)
 ### Model 2.2 (on the subset of 'saturation')
 ```{r}
 saturation <- subset(mydata, HSB == "saturation")
-summary(saturation)
+# summary(saturation)
 M2.2 <- rma.mv(yi = ES_biol, V = Z_var,
                            method = "REML",
                            mods = ~colour_type+pollution_type+colour_type:pollution_type
@@ -246,7 +296,7 @@ summary(M2.2)
 ### Model 2.3 (on the subset of 'brightness')
 ```{r}
 brightness <- subset(mydata, HSB == "brightness")
-summary(brightness)
+# summary(brightness)
 M2.3<- rma.mv(yi = ES_biol, V = Z_var,
                           method = "REML",
                           mods = ~colour_type+pollution_type+colour_type:pollution_type+sex+age+measured_part+ study_type +raw_or_model+ method,
@@ -261,7 +311,7 @@ summary(M2.3)# interaction significant
 ### Model 2.4 (on the subset of 'other')
 ```{r}
 other <- subset(mydata, HSB == "other")
-summary(other)
+# summary(other)
 M2.4<- rma.mv(yi = ES_biol, V = Z_var,
                      method = "REML",
                      mods = ~colour_type+pollution_type+colour_type:pollution_type
@@ -319,57 +369,13 @@ M4.0 <- run.model(mydata, ~sqrt(Z_var))
 summary(M4.0)
 ```
 
-### Model 5.0 Time lag bias
+### Model 5.0 - Time lag bias
 ```{r}
 M5.0 <- run.model(mydata, ~date)
 summary(M5.0)
 ```
 
-# Function to create Figure 3 and Figure S4
-```{r}
-run.model<-function(mydata,formula){
-  
-  mydata<-as.data.frame(mydata)
-  Z<-make_VCV_matrix(mydata, V="Z_var", cluster = "Study_no", obs="es_ID")
-  
-  rma.mv(yi=ES_biol, V=Z,
-         method="REML",
-         mods= formula,
-         random = list(~1|tip_label,
-                       ~1|Study_no,
-                       ~1|es_ID,
-                       ~1|research_group),
-         control=list(optimizer="optim",optmethod="Nelder-Mead"),
-         data = mydata)
-}
 
-plot_continuous<-function(data, model, moderator, xlab){
-  pred<-predict.rma(model)
-  data %>% mutate(fit=pred$pred, 
-                  ci.lb=pred$ci.lb,
-                  ci.ub=pred$ci.ub,
-                  pr.lb=pred$cr.lb,
-                  pr.ub=pred$cr.ub) %>% 
-    ggplot(aes(x = moderator, y = ES_biol)) +
-    geom_ribbon(aes(ymin = pr.lb, ymax = pr.ub, color = NULL), alpha = .1) +
-    geom_ribbon(aes(ymin = ci.lb, ymax = ci.ub, color = NULL), alpha = .3) +
-    geom_point(aes(size=(1/sqrt(mydata$Z_var))), shape= 21, alpha=0.7, fill="#6F94B7", col="#305980") +
-    geom_line(aes(y = fit), size = 1.5)+  
-    labs(x = xlab, y = "Effect size", size = "Precision (1/SE)") +
-    theme_bw() +
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-    scale_size_continuous(range=c(1,12))+
-    geom_hline(yintercept = 0,linetype = 2, colour = "black",alpha=0.5)+   
-    theme(text = element_text(size = 18, colour = "black", hjust = 0.5),
-          legend.text=element_text(size=14),
-          legend.position=c(0,0), 
-          legend.justification = c(0,0),
-          legend.background = element_blank(), 
-          legend.direction="horizontal",
-          legend.title = element_text(size=15), 
-          panel.border=element_rect(colour="black", fill=NA, size=1.2))
-}
-```
 
 ```{r}
 #| label: fig-fig3
