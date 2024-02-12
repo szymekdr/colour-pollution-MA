@@ -93,7 +93,7 @@ plot_continuous<-function(data, model, moderator, xlab){
 ```
 
 # Load and process data
-
+Raw data (both the "biological" and "physical" effect sizes) can be downloaded from [this](https://github.com/szymekdr/colour-pollution-MA/raw/main/data/data_plumage_pollution_MA.zip) link. The files is a compressed archive with all datasets and the phylogenetic tree `birdtree.tre`. 
 
 ```{r}
 mydata <- read.csv(here("data", "ES_biol_2023.csv"), sep = ";")
