@@ -1,5 +1,5 @@
 ---
-title: "MA of pollution impacts on bird lumage colouration"
+title: "MA of pollution impacts on bird plumage colouration"
 author: "Katarzyna Janas, Agnieszka Gudowska, Szymek Drobniak"
 date: "`r Sys.Date()`"
 format:
@@ -93,6 +93,8 @@ plot_continuous<-function(data, model, moderator, xlab){
 ```
 
 # Load and process data
+
+
 ```{r}
 mydata <- read.csv(here("data", "ES_biol_2023.csv"), sep = ";")
 
